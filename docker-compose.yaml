@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+
+  ghapi:
+    image: alpine:latest
+    container_name: ghapi
+    privileged: true
+    restart: always
+    environment:
+      WX_TOKEN: ${WX_TOKEN}
+      AI_TOKEN: ${AI_TOKEN}
+      DATA_SOURCE: ${DATA_SOURCE}
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
+      - type: bind
+        source: ./ghapi
+        target: /go/src/ghapi
+      - type: bind
+        source: /usr/share/zoneinfo/PRC
+        target: /usr/share/zoneinfo/PRC
+    command: /go/src/ghapi
+    ports:
+      - "8089:8089"
