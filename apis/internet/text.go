@@ -69,9 +69,6 @@ func TextHandel(ctx *MsgContext) {
 	resultChan := make(chan []lib.Result)
 	go func() {
 		result := lib.Send(ctx.Msg.Content)
-		if result == nil {
-			Error(ctx.ResponseWriter)
-		}
 		resultChan <- result
 	}()
 
