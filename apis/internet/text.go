@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"log"
-	"net/http"
 	"strings"
 	"sync"
 	"time"
@@ -51,6 +50,7 @@ func TextHandel(ctx *MsgContext) {
 			CreateTime:   ctx.Msg.CreateTime,
 			MsgType:      "text",
 			Content:      existsFaq.Answer,
+			//Content: `<a href="weixin://bizmsgmenu?msgmenucontent=重试&msgmenuid=1">重试</a>`,
 		}
 		res, err := xml.Marshal(resp)
 		if err != nil {
@@ -66,6 +66,15 @@ func TextHandel(ctx *MsgContext) {
 		return
 	}
 
+	resultChan := make(chan []lib.Result)
+	go func() {
+		result := lib.Send(ctx.Msg.Content)
+		if result == nil {
+			Error(ctx.ResponseWriter)
+		}
+		resultChan <- result
+	}()
+
 	resp := Response{
 		ToUserName:   ctx.Msg.FromUserName,
 		FromUserName: ctx.Msg.ToUserName,
@@ -73,11 +82,19 @@ func TextHandel(ctx *MsgContext) {
 		MsgType:      "text",
 	}
 
-	go func() {
-		result := lib.Send(ctx.Msg.Content)
-		if result == nil {
+	select {
+	case <-time.After(10 * time.Second):
+		fmt.Println("超时")
+		resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">重试</a>`, ctx.Msg.Content)
+		res, err := xml.Marshal(resp)
+		if err != nil {
+			fmt.Println("xml.Marshal error: ", err)
 			Error(ctx.ResponseWriter)
+			return
 		}
+		fmt.Fprintf(ctx.ResponseWriter, string(res))
+		return
+	case result := <-resultChan:
 		var returnMsg string
 		for _, msg := range result {
 			for _, m := range msg.Choices {
@@ -104,24 +121,6 @@ func TextHandel(ctx *MsgContext) {
 		config.Limit[ctx.Msg.FromUserName].Cnt += 1
 		config.Limit[ctx.Msg.FromUserName].LastSt = time.Now().Unix()
 		fmt.Fprintf(ctx.ResponseWriter, string(res))
-		return
-	}()
-
-	select {
-	// 微信超时是3次重发都没返回则超时，每次5秒（3*5=15秒），这里设置10秒，没结果就先返回
-	case <-time.After(10 * time.Second):
-		log.Println("请求超时")
-		resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">请求超时，点击重试</a>`, ctx.Msg.Content)
-		res, err := xml.Marshal(resp)
-		if err != nil {
-			fmt.Println("xml.Marshal error: ", err)
-			Error(ctx.ResponseWriter)
-			return
-		}
-		log.Println("response=> ", string(res))
-		fmt.Fprintf(ctx.ResponseWriter, string(res))
-		ctx.ResponseWriter.(http.Flusher).Flush()
-		return
 	}
 
 }
