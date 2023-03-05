@@ -85,7 +85,7 @@ func TextHandel(ctx *MsgContext) {
 	select {
 	case <-time.After(5 * time.Second):
 		fmt.Println("超时")
-		resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">重试</a>`, ctx.Msg.Content)
+		resp.Content = `<a href="weixin://bizmsgmenu?msgmenucontent=重试&msgmenuid=1">重试</a>`
 		res, err := xml.Marshal(resp)
 		if err != nil {
 			fmt.Println("xml.Marshal error: ", err)
