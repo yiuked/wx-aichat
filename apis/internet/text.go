@@ -92,6 +92,7 @@ func TextHandel(ctx *MsgContext) {
 			Error(ctx.ResponseWriter)
 			return
 		}
+		log.Println("response=> ", string(res))
 		fmt.Fprintf(ctx.ResponseWriter, string(res))
 		return
 	case result := <-resultChan:
