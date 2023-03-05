@@ -83,7 +83,7 @@ func TextHandel(ctx *MsgContext) {
 	}
 
 	select {
-	case <-time.After(10 * time.Second):
+	case <-time.After(5 * time.Second):
 		fmt.Println("超时")
 		resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">重试</a>`, ctx.Msg.Content)
 		res, err := xml.Marshal(resp)
