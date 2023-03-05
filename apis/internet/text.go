@@ -108,7 +108,7 @@ func TextHandel(ctx *MsgContext) {
 	select {
 	// 微信超时是3次重发都没返回则超时，每次5秒（3*5=15秒），这里设置10秒，没结果就先返回
 	case <-time.After(10 * time.Second):
-		fmt.Println("超时")
+		log.Println("请求超时")
 		resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">请求超时，点击重试</a>`, ctx.Msg.Content)
 		res, err := xml.Marshal(resp)
 		if err != nil {

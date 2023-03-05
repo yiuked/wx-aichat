@@ -6,6 +6,7 @@ POST localhost:8089/callback?signature=547946c083001eaa5d671f50135e126c50838d8c&
 Content-Type: application/xml
 
 <xml>
+    <FromUserName>111</FromUserName>
     <MsgType>text</MsgType>
-    <Content>用C写出MAX函数</Content>
+    <Content>总结一下百年孤独这本书吧</Content>
 </xml>
