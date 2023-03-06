@@ -8,5 +8,8 @@ Content-Type: application/xml
 <xml>
     <FromUserName>111</FromUserName>
     <MsgType>text</MsgType>
-    <Content>总结一下百年孤独这本书吧ksfb0</Content>
+    <Content>总结一下百年孤独这本书吧ksfb005</Content>
 </xml>
+
+###
+GET localhost:8089/getAnswer?uuid=6401bf0849f7f157900d8c19

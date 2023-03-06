@@ -14,6 +14,7 @@ import (
 var (
 	WxToken    string
 	AIToken    string
+	HOST       string
 	DataSource string
 	Mgo        *MgoClient
 	Limit      map[string]*UserLimit
@@ -33,6 +34,7 @@ func init() {
 	WxToken = os.Getenv("WX_TOKEN")
 	DataSource = os.Getenv("DATA_SOURCE")
 	AIToken = os.Getenv("AI_TOKEN")
+	HOST = os.Getenv("HOST")
 	err := initMongoDB()
 	if err != nil {
 		panic(err)

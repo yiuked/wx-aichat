@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 	"strings"
 	"time"
@@ -45,7 +46,11 @@ func TextHandel(ctx *MsgContext) {
 	var existsFaq Faq
 	if err := config.Mgo.Db.Collection("faq").FindOne(context.Background(), bson.M{"question": ctx.Msg.Content}).
 		Decode(&existsFaq); err == nil {
-		resp.Content = existsFaq.Answer
+		if len(existsFaq.Answer) > 1000 {
+			resp.Content = fmt.Sprintf(`<a href="%s/getAnswer?uuid=%s">啊哈！篇幅过长拉，点击查看详情吧</a>`, config.HOST, existsFaq.Uuid.Hex())
+		} else {
+			resp.Content = existsFaq.Answer
+		}
 		delete(locks, taskKey)
 		ResponseXML(ctx.ResponseWriter, resp)
 		return
@@ -74,14 +79,26 @@ func TextHandel(ctx *MsgContext) {
 			returnMsg = returnMsg + strings.Trim(m.Message.Content, "\n")
 		}
 	}
-	resp.Content = returnMsg
 
-	faq := Faq{UserName: ctx.Msg.FromUserName, CreateTime: time.Now().Unix(), Question: ctx.Msg.Content, Answer: resp.Content}
+	faq := Faq{
+		Uuid:       primitive.NewObjectID(),
+		UserName:   ctx.Msg.FromUserName,
+		CreateTime: time.Now().Unix(),
+		Question:   ctx.Msg.Content,
+		Answer:     returnMsg,
+	}
 	if _, err := config.Mgo.Db.Collection("faq").InsertOne(context.Background(), &faq); err != nil {
 		log.Println("mongodb insert err,", err)
 		Error(ctx.ResponseWriter, resp)
 		return
 	}
+
+	if len(faq.Answer) > 1000 {
+		resp.Content = fmt.Sprintf(`<a href="%s/getAnswer?uuid=%s">啊哈！篇幅过长拉，点击查看详情吧</a>`, config.HOST, faq.Uuid.Hex())
+	} else {
+		resp.Content = faq.Answer
+	}
+
 	config.Limit[ctx.Msg.FromUserName].Cnt += 1
 	config.Limit[ctx.Msg.FromUserName].LastSt = time.Now().Unix()
 	delete(locks, taskKey)

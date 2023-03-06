@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"io"
 	"log"
 	"net/http"
@@ -58,6 +59,7 @@ type Response struct {
 }
 
 type Faq struct {
+	Uuid       primitive.ObjectID `bson:"_id"`
 	UserName   string
 	CreateTime int64
 	Question   string
@@ -119,4 +121,9 @@ func ResponseXML(w io.Writer, resp Response) {
 	}
 	log.Println("response=> ", string(res))
 	fmt.Fprintf(w, string(res))
+}
+
+func ResponseText(w io.Writer, text string) {
+	log.Println("response=> ", text)
+	fmt.Fprintf(w, text)
 }

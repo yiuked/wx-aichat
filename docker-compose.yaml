@@ -11,6 +11,7 @@ services:
       WX_TOKEN: ${WX_TOKEN}
       AI_TOKEN: ${AI_TOKEN}
       DATA_SOURCE: ${DATA_SOURCE}
+      HOST: ${HOST}
     volumes:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
@@ -23,3 +24,5 @@ services:
     command: /go/src/ghapi
     ports:
       - "8089:8089"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
