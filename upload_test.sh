@@ -3,7 +3,7 @@
 # shellcheck disable=SC1068
 source=" ./ghapi ./docker-compose.yaml"
 zipfile="./ghapi.zip"
-remotedir="/data/$1"
+remotedir="/data/wx-aichat"
 host="$1"
 make="install"
 
@@ -31,8 +31,8 @@ unzip $zipfile
 rm -f $zipfile
 
 # backup docker logs
-docker-compose down
-docker-compose up -d
+#docker-compose down
+docker compose restart
 eeooff
 
 # clear file

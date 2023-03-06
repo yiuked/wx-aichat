@@ -2,8 +2,10 @@ package internet
 
 import (
 	"context"
+	"encoding/xml"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"time"
 )
@@ -99,10 +101,22 @@ func (mc *MsgContext) Err() error {
 	return nil
 }
 
-func Error(w io.Writer) {
-	fmt.Fprintf(w, "系统繁忙，请稍后重试！")
+func Error(w io.Writer, response Response) {
+	response.Content = "系统繁忙，请稍后重试！"
+	ResponseXML(w, response)
 }
 
-func TodayLimit(w io.Writer) {
-	fmt.Fprintf(w, "今日已超限！")
+func TodayLimit(w io.Writer, response Response) {
+	response.Content = "今日已超限"
+	ResponseXML(w, response)
+}
+
+func ResponseXML(w io.Writer, resp Response) {
+	res, err := xml.Marshal(resp)
+	if err != nil {
+		log.Println("xml.Marshal error: ", err)
+		return
+	}
+	log.Println("response=> ", string(res))
+	fmt.Fprintf(w, string(res))
 }
