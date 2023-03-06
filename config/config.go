@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"go.mongodb.org/mongo-driver/x/mongo/driver/connstring"
 	"os"
+	"runtime"
 	"time"
 )
 
@@ -69,4 +70,21 @@ func initMongoDB() error {
 
 	Mgo.Db = Mgo.Client.Database(cs.Database)
 	return nil
+}
+
+func Tick24() <-chan time.Time {
+	loc, err := time.LoadLocation("Local")
+	if err != nil {
+		panic(err)
+	}
+	t := time.Now().In(loc)
+	target := time.Date(t.Year(), t.Month(), t.Day()+1, 0, 0, 0, 0, loc)
+	duration := target.Sub(t)
+	return time.Tick(duration)
+}
+
+// ClearMap 重置计数器
+func ClearMap() {
+	Limit = make(map[string]*UserLimit)
+	runtime.GC()
 }

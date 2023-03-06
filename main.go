@@ -2,6 +2,7 @@ package main
 
 import (
 	"bios-dev/apis"
+	"bios-dev/config"
 	"embed"
 	"fmt"
 	"io/fs"
@@ -12,6 +13,9 @@ import (
 var jsFiles embed.FS
 
 func main() {
+	// 每天24点清空 map 内所有值
+	ticker := config.Tick24()
+
 	http.HandleFunc("/callback", apis.Callback)
 	http.HandleFunc("/getAnswer", apis.GetAnswer)
 	// 将嵌入的 js/test.js 文件作为 HTTP 响应
@@ -28,4 +32,13 @@ func main() {
 	if err != nil {
 		fmt.Println("http.ListenAndServe error: ", err)
 	}
+
+	go func() {
+		for {
+			select {
+			case <-ticker:
+				config.ClearMap()
+			}
+		}
+	}()
 }
