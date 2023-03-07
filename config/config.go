@@ -1,6 +1,7 @@
 package config
 
 import (
+	"bios-dev/lib"
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -14,11 +15,14 @@ import (
 // 全局配置
 var (
 	WxToken    string
+	WxAppid    string
+	WxSecret   string
 	AIToken    string
 	HOST       string
 	DataSource string
 	Mgo        *MgoClient
 	Limit      map[string]*UserLimit
+	Cache      *lib.Cache
 )
 
 type UserLimit struct {
@@ -33,6 +37,8 @@ type MgoClient struct {
 
 func init() {
 	WxToken = os.Getenv("WX_TOKEN")
+	WxAppid = os.Getenv("WX_APPID")
+	WxSecret = os.Getenv("WX_SECRET")
 	DataSource = os.Getenv("DATA_SOURCE")
 	AIToken = os.Getenv("AI_TOKEN")
 	HOST = os.Getenv("HOST")
@@ -41,6 +47,8 @@ func init() {
 		panic(err)
 	}
 	Limit = make(map[string]*UserLimit)
+	// 初始化缓存
+	Cache = lib.NewCache(10 * time.Second)
 }
 
 // initMongoDB 初始化mongodb

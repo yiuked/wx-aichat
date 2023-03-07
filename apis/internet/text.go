@@ -3,6 +3,7 @@ package internet
 import (
 	"bios-dev/config"
 	"bios-dev/lib"
+	"bios-dev/lib/wx"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
@@ -71,7 +72,7 @@ func TextHandel(ctx *MsgContext) {
 		return
 	}
 	// 只有第一次会执行以下代码
-	result := lib.Send(ctx.Msg.Content)
+	result := wx.Send(ctx.Msg.Content)
 	log.Println("收到结果")
 	var returnMsg string
 	for _, msg := range result {

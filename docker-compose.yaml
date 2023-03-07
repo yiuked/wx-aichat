@@ -12,6 +12,8 @@ services:
       AI_TOKEN: ${AI_TOKEN}
       DATA_SOURCE: ${DATA_SOURCE}
       HOST: ${HOST}
+      WX_APPID: ${WX_APPID}
+      WX_SECRET: ${WX_SECRET}
     volumes:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime

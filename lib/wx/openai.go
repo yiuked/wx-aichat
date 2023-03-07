@@ -1,4 +1,4 @@
-package lib
+package wx
 
 import (
 	"bios-dev/config"
