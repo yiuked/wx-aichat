@@ -13,3 +13,19 @@ Content-Type: application/xml
 
 ###
 GET localhost:8089/getAnswer?uuid=6401bf0849f7f157900d8c19
+
+###
+POST localhost:8089/addDraft?uuid=6401bf0849f7f157900d8c19
+Content-Type: application/json
+
+{
+  "articles": [
+    {
+      "title":"TITLE",
+      "author":"AUTHOR",
+      "digest":"DIGEST",
+      "content":"CONTENT",
+      "need_open_comment":1
+    }
+  ]
+}

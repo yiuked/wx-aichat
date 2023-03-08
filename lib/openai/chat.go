@@ -1,4 +1,4 @@
-package wx
+package openai
 
 import (
 	"bios-dev/config"

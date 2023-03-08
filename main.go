@@ -13,6 +13,7 @@ import (
 var jsFiles embed.FS
 
 func main() {
+	http.HandleFunc("/addDraft", apis.AddDraft)
 	http.HandleFunc("/callback", apis.Callback)
 	http.HandleFunc("/getAnswer", apis.GetAnswer)
 	// 将嵌入的 js/test.js 文件作为 HTTP 响应
