@@ -8,7 +8,7 @@ Content-Type: application/xml
 <xml>
     <FromUserName>111</FromUserName>
     <MsgType>text</MsgType>
-    <Content>总结一下百年孤独这本书吧ksfb005</Content>
+    <Content>这本书反映了什么呢</Content>
 </xml>
 
 ###

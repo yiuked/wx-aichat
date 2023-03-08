@@ -12,7 +12,7 @@ func EventHandel(ctx *MsgContext) {
 			FromUserName: ctx.Msg.ToUserName,
 			CreateTime:   time.Now().Unix(),
 			MsgType:      "text",
-			Content:      "一道灵光咋现，你发现了一个神奇洞穴，它似乎拥有神奇的力量，知晓所有的秘密和答案，它每天可以回答30个问题。",
+			Content:      "一道灵光咋现，你发现了一个神奇洞穴，它似乎拥有神奇的力量，知晓所有的秘密和答案，它每天可以回答50个问题。",
 		}
 		ResponseXML(ctx.ResponseWriter, replyMsg)
 	} else if ctx.Msg.Event == "unsubscribe" { // 如果是取消关注事件
