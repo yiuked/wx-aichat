@@ -15,6 +15,7 @@ var jsFiles embed.FS
 func main() {
 	http.HandleFunc("/callback", apis.Callback)
 	http.HandleFunc("/getAnswer", apis.GetAnswer)
+	http.HandleFunc("/addDraft", apis.AddDraft)
 	// 将嵌入的 js/test.js 文件作为 HTTP 响应
 	http.HandleFunc("/md-page.js", func(w http.ResponseWriter, r *http.Request) {
 		content, err := fs.ReadFile(jsFiles, "static/md-page.js")

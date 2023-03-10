@@ -3,6 +3,7 @@ package internet
 import (
 	"bios-dev/config"
 	"context"
+	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -21,7 +22,14 @@ func GetAnswer(ctx *MsgContext) {
 	var existsFaq Faq
 	if err := config.Mgo.Db.Collection("faq").FindOne(context.Background(), bson.M{"_id": hex}).
 		Decode(&existsFaq); err == nil {
-		ResponseText(ctx.ResponseWriter, `<script src="/md-page.js"></script><noscript>`+existsFaq.Answer)
+		if existsFaq.UserName == config.WXOpenId {
+			ResponseText(ctx.ResponseWriter,
+				fmt.Sprintf(`<script src="/md-page.js"></script><noscript>%s<a href="/addDraft?uuid=%s">发到草稿</a>`,
+					existsFaq.Answer, existsFaq.Uuid.Hex()),
+			)
+		} else {
+			ResponseText(ctx.ResponseWriter, fmt.Sprintf(`<script src="/md-page.js"></script><noscript>%s`, existsFaq.Answer))
+		}
 		return
 	}
 	ResponseText(ctx.ResponseWriter, "读取失败")

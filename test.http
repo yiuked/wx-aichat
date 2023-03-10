@@ -13,3 +13,34 @@ Content-Type: application/xml
 
 ###
 GET localhost:8089/getAnswer?uuid=6401bf0849f7f157900d8c19
+
+
+###
+GET localhost:8089/addDraft?uuid=6401bf0849f7f157900d8c19
+
+###
+POST https://api.weixin.qq.com/cgi-bin/draft/add?access_token=
+Content-Type: application/json
+
+{
+  "articles": [
+    {
+      "title": "测试",
+      "author": "虾客君",
+      "content": "CONTENT",
+      "thumb_media_id": "XuccSFRXw-w0Ozj76oDa5xaYaZF9BFEqsXSLAYPAeIo3VOAPe8Oslq47RtLriSSJ",
+      "need_open_comment": 0,
+      "only_fans_can_comment": 0
+    }
+  ]
+}
+
+###
+POST https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=
+Content-Type: application/json
+
+{
+  "type": "image",
+  "offset": 0,
+  "count": 20
+}
