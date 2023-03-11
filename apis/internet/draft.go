@@ -4,10 +4,15 @@ import (
 	"bios-dev/config"
 	"bios-dev/lib/wx"
 	"context"
+	"fmt"
 	"github.com/russross/blackfriday/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"sync"
+	"time"
 )
+
+var addDraftLock sync.Mutex
 
 func AddDraft(ctx *MsgContext) {
 	// 接收消息并回复
@@ -21,6 +26,16 @@ func AddDraft(ctx *MsgContext) {
 		ResponseText(ctx.ResponseWriter, "参数错误")
 		return
 	}
+
+	cacheKey := fmt.Sprintf("draft%s", uuid)
+	addDraftLock.Lock()
+	defer addDraftLock.Unlock()
+
+	if _, err := config.Cache.Get(cacheKey); err == nil {
+		ResponseText(ctx.ResponseWriter, "操作频繁")
+		return
+	}
+
 	var faq Faq
 	if err := config.Mgo.Db.Collection("faq").FindOne(context.Background(), bson.M{"_id": hex}).
 		Decode(&faq); err == nil {
@@ -43,6 +58,7 @@ func AddDraft(ctx *MsgContext) {
 			}
 
 			wx.AddDraft(token.AccessToken, params)
+			config.Cache.Set(cacheKey, 1, 60*time.Second)
 			ResponseText(ctx.ResponseWriter, "发布成功")
 		} else {
 			ResponseText(ctx.ResponseWriter, "权限不足")
