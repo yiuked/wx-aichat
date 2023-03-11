@@ -46,7 +46,7 @@ func AddDraft(ctx *MsgContext) {
 			html := blackfriday.Run([]byte(faq.Answer))
 			re := regexp.MustCompile(`<pre><code class="language-(.*?)">`)
 			htmlString := string(html)
-			htmlString = re.ReplaceAllString(htmlString, `<pre class="code-snippet code-snippet_nowrap" data-lang="$1"><code>`)
+			htmlString = re.ReplaceAllString(htmlString, `<pre class="code-snippet code-snippet_nowrap code-snippet__$1" data-lang="$1"><code>`)
 			params.Articles = append(params.Articles, wx.Article{
 				ThumbMediaID:       config.WxMediaId,
 				Author:             config.WxAuthor,
