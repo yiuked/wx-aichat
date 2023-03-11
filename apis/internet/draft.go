@@ -27,7 +27,7 @@ func AddDraft(ctx *MsgContext) {
 			var params wx.AddDraftReq
 			params.Articles = append(params.Articles, wx.Article{
 				ThumbMediaID:       config.WxMediaId,
-				Author:             "ChatGPT",
+				Author:             config.WxAuthor,
 				OnlyFansCanComment: 0,
 				NeedOpenComment:    0,
 				Title:              faq.Question,

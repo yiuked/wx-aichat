@@ -18,6 +18,7 @@ var (
 	WxSecret   string
 	WxMediaId  string
 	WXOpenId   string
+	WxAuthor   string
 	AIToken    string
 	HOST       string
 	DataSource string
@@ -42,6 +43,7 @@ func init() {
 	WxSecret = os.Getenv("WX_SECRET")
 	WxMediaId = os.Getenv("WX_MEDIA_ID")
 	WXOpenId = os.Getenv("WX_OPEN_ID")
+	WxAuthor = os.Getenv("WX_AUTHOR")
 	DataSource = os.Getenv("DATA_SOURCE")
 	AIToken = os.Getenv("AI_TOKEN")
 	HOST = os.Getenv("HOST")
