@@ -3,6 +3,7 @@ module bios-dev
 go 1.18
 
 require (
+	github.com/russross/blackfriday/v2 v2.1.0
 	github.com/stretchr/testify v1.6.1
 	go.mongodb.org/mongo-driver v1.11.2
 )

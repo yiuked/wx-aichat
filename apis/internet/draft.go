@@ -4,6 +4,7 @@ import (
 	"bios-dev/config"
 	"bios-dev/lib/wx"
 	"context"
+	"github.com/russross/blackfriday/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -25,13 +26,14 @@ func AddDraft(ctx *MsgContext) {
 		Decode(&faq); err == nil {
 		if faq.UserName == config.WXOpenId {
 			var params wx.AddDraftReq
+			html := blackfriday.Run([]byte(faq.Answer))
 			params.Articles = append(params.Articles, wx.Article{
 				ThumbMediaID:       config.WxMediaId,
 				Author:             config.WxAuthor,
 				OnlyFansCanComment: 0,
 				NeedOpenComment:    0,
 				Title:              faq.Question,
-				Content:            faq.Answer,
+				Content:            string(html),
 			})
 
 			token, err := wx.GetAccessToken()
