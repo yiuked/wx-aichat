@@ -8,6 +8,7 @@ import (
 	"github.com/russross/blackfriday/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"regexp"
 	"sync"
 	"time"
 )
@@ -35,20 +36,24 @@ func AddDraft(ctx *MsgContext) {
 		ResponseText(ctx.ResponseWriter, "操作频繁")
 		return
 	}
-
+	// 微信代码块样式
+	// <pre class="code-snippet" data-lang="python"></pre>
 	var faq Faq
 	if err := config.Mgo.Db.Collection("faq").FindOne(context.Background(), bson.M{"_id": hex}).
 		Decode(&faq); err == nil {
 		if faq.UserName == config.WXOpenId {
 			var params wx.AddDraftReq
 			html := blackfriday.Run([]byte(faq.Answer))
+			re := regexp.MustCompile(`<pre><code class="language-(.*?)">`)
+			htmlString := string(html)
+			htmlString = re.ReplaceAllString(htmlString, `<pre class="code-snippet" data-lang="$1"><code>`)
 			params.Articles = append(params.Articles, wx.Article{
 				ThumbMediaID:       config.WxMediaId,
 				Author:             config.WxAuthor,
 				OnlyFansCanComment: 0,
 				NeedOpenComment:    0,
 				Title:              faq.Question,
-				Content:            string(html),
+				Content:            htmlString,
 			})
 
 			token, err := wx.GetAccessToken()
