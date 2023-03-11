@@ -12,6 +12,7 @@ services:
       WX_SECRET: ${WX_SECRET}
       WX_TOKEN: ${WX_TOKEN}
       WX_MEDIA_ID: ${WX_MEDIA_ID}
+      WX_OPEN_ID: ${WX_OPEN_ID}
       AI_TOKEN: ${AI_TOKEN}
       DATA_SOURCE: ${DATA_SOURCE}
       HOST: ${HOST}

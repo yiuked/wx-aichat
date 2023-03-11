@@ -13,7 +13,6 @@ import (
 var jsFiles embed.FS
 
 func main() {
-	http.HandleFunc("/addDraft", apis.AddDraft)
 	http.HandleFunc("/callback", apis.Callback)
 	http.HandleFunc("/getAnswer", apis.GetAnswer)
 	http.HandleFunc("/addDraft", apis.AddDraft)

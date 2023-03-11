@@ -7,20 +7,22 @@ import (
 )
 
 const (
-	AddDraftApi = " https://api.weixin.qq.com/cgi-bin/draft/add?access_token=%s"
+	AddDraftApi = "https://api.weixin.qq.com/cgi-bin/draft/add?access_token=%s"
 )
 
+type Article struct {
+	ThumbMediaID       string `json:"thumb_media_id"`
+	Author             string `json:"author"`
+	OnlyFansCanComment int    `json:"only_fans_can_comment"`
+	Digest             string `json:"digest"`
+	ContentSourceUrl   string `json:"content_source_url"`
+	NeedOpenComment    int    `json:"need_open_comment"`
+	Title              string `json:"title"`
+	Content            string `json:"content"`
+}
+
 type AddDraftReq struct {
-	Articles []struct {
-		ThumbMediaID       string `json:"thumb_media_id"`
-		Author             string `json:"author"`
-		OnlyFansCanComment int    `json:"only_fans_can_comment"`
-		Digest             string `json:"digest"`
-		ContentSourceUrl   string `json:"content_source_url"`
-		NeedOpenComment    int    `json:"need_open_comment"`
-		Title              string `json:"title"`
-		Content            string `json:"content"`
-	} `json:"articles"`
+	Articles []Article `json:"articles"`
 }
 
 // AddDraft 新建草稿
