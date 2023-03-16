@@ -70,7 +70,7 @@ func TextHandel(ctx *MsgContext) {
 	} else if locks[taskKey] > 2 {
 		fmt.Println("请求超时")
 		resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">糟糕！断片了，点我重试一次</a>`, ctx.Msg.Content)
-		if locks[taskKey] >= 5 {
+		if locks[taskKey] >= 2 {
 			delete(locks, taskKey)
 		}
 		ResponseXML(ctx.ResponseWriter, resp)
@@ -86,8 +86,9 @@ func TextHandel(ctx *MsgContext) {
 		}
 	}
 
-	if len(result) <= 0 {
-		resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">糟糕！断片了，点我重试一次</a>`, ctx.Msg.Content)
+	if len(returnMsg) <= 0 {
+		delete(locks, taskKey)
+		resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">糟糕！GPT连接失败，点我重试一次</a>`, ctx.Msg.Content)
 		ResponseXML(ctx.ResponseWriter, resp)
 		return
 	}

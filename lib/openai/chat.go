@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -71,7 +72,11 @@ func Send(msg string) []Result {
 		// 发送 HTTP 请求
 		res, err := client.Do(req)
 		if err != nil {
-			fmt.Println("Failed to send HTTP request:", err)
+			log.Println("Failed to send HTTP request:", err)
+			return nil
+		}
+		if res.StatusCode != http.StatusOK {
+			log.Printf("HTTP request fail %+v", res)
 			return nil
 		}
 
