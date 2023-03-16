@@ -53,7 +53,6 @@ func Callback(w http.ResponseWriter, r *http.Request) {
 			internet.EventHandel(ctx)
 		}
 	}
-
 }
 
 func checkSignature(token, signature, timestamp, nonce string) bool {
