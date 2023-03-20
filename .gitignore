@@ -1,6 +1,6 @@
 .idea
 go.sum
-.env
+/.env
 ghapi
 /*.http
 .docker/data
