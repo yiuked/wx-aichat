@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"go.mongodb.org/mongo-driver/x/mongo/driver/connstring"
+	"log"
 	"os"
 	"time"
 )
@@ -49,6 +50,7 @@ func init() {
 	HOST = os.Getenv("HOST")
 	err := initMongoDB()
 	if err != nil {
+		log.Println(DataSource)
 		panic(err)
 	}
 	Limit = make(map[string]*UserLimit)

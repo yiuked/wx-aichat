@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  mongo:
+    image: 'bitnami/mongodb:latest'
+    container_name: mongo
+    environment:
+      - MONGODB_ROOT_PASSWORD=123456
+    volumes:
+      - ./data:/bitnami/mongodb
+    restart: always
+  ghapi:
+    image: wxgpt:1.0.0
+    container_name: wxgpt
+    privileged: true
+    restart: always
+    environment:
+      WX_APPID: ${WX_APPID}
+      WX_SECRET: ${WX_SECRET}
+      WX_TOKEN: ${WX_TOKEN}
+      WX_MEDIA_ID: ${WX_MEDIA_ID}
+      WX_OPEN_ID: ${WX_OPEN_ID}
+      WX_AUTHOR: ${WX_AUTHOR}
+      AI_TOKEN: ${AI_TOKEN}
+      DATA_SOURCE: ${DATA_SOURCE}
+      HOST: ${HOST}
+    ports:
+      - "8089:8089"
+    depends_on:
+      - mongo

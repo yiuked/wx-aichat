@@ -3,3 +3,4 @@ go.sum
 .env
 ghapi
 /*.http
+.docker/data
