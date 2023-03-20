@@ -7,7 +7,7 @@ COPY . .
 RUN make install
 
 # 第二个镜像
-FROM alpine:latest as ghapi
+FROM alpine:latest as wxgtp
 
 LABEL MAINTAINER="yiuked"
 
