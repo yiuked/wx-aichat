@@ -26,16 +26,17 @@ func TextHandel(ctx *MsgContext) {
 		CreateTime:   ctx.Msg.CreateTime,
 		MsgType:      "text",
 	}
+
 	// 检测是否有超过当日50次限制
 	if v, b := config.Limit[ctx.Msg.FromUserName]; b {
+		lastAt := time.Unix(v.LastSt, 0)
+		if time.Now().Day()-lastAt.Day() > 0 {
+			config.Limit[ctx.Msg.FromUserName] = &config.UserLimit{Cnt: 0, LastSt: time.Now().Unix()}
+		}
+
 		if v.Cnt > 50 {
-			lastAt := time.Unix(v.LastSt, 0)
-			if time.Now().Day()-lastAt.Day() > 0 {
-				config.Limit[ctx.Msg.FromUserName] = &config.UserLimit{Cnt: 0, LastSt: time.Now().Unix()}
-			} else {
-				TodayLimit(ctx.ResponseWriter, resp)
-				return
-			}
+			TodayLimit(ctx.ResponseWriter, resp)
+			return
 		}
 	} else {
 		config.Limit[ctx.Msg.FromUserName] = &config.UserLimit{Cnt: 0, LastSt: time.Now().Unix()}
