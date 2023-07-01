@@ -1,9 +1,9 @@
 package wx
 
 import (
-	"bios-dev/lib"
 	"fmt"
 	"net/http"
+	"wx-aichat/lib"
 )
 
 const (

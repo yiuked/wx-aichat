@@ -1,9 +1,9 @@
 package apis
 
 import (
-	"bios-dev/lib/wx"
 	"log"
 	"net/http"
+	"wx-aichat/lib/wx"
 )
 
 func Publish(w http.ResponseWriter, r *http.Request) {

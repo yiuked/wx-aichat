@@ -1,8 +1,8 @@
 package apis
 
 import (
-	"bios-dev/apis/internet"
 	"net/http"
+	"wx-aichat/apis/internet"
 )
 
 func GetAnswer(w http.ResponseWriter, r *http.Request) {

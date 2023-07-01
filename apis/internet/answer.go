@@ -1,11 +1,11 @@
 package internet
 
 import (
-	"bios-dev/config"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"wx-aichat/config"
 )
 
 func GetAnswer(ctx *MsgContext) {

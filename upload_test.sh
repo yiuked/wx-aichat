@@ -8,7 +8,7 @@ host="$1"
 make="install"
 
 # build code
-git pull
+#git pull
 set -x
 make "$make"
 set +x

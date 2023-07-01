@@ -1,12 +1,12 @@
 package main
 
 import (
-	"bios-dev/apis"
 	"embed"
 	"fmt"
 	"io/fs"
 	"log"
 	"net/http"
+	"wx-aichat/apis"
 )
 
 //go:embed static/*

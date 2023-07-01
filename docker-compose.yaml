@@ -14,7 +14,7 @@ services:
       WX_MEDIA_ID: ${WX_MEDIA_ID}
       WX_OPEN_ID: ${WX_OPEN_ID}
       WX_AUTHOR: ${WX_AUTHOR}
-      AI_TOKEN: ${AI_TOKEN}
+      OPEN_AI_KEY: ${OPEN_AI_KEY}
       DATA_SOURCE: ${DATA_SOURCE}
       HOST: ${HOST}
     volumes:

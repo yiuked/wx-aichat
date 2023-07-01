@@ -3,8 +3,6 @@
 package apis
 
 import (
-	"bios-dev/apis/internet"
-	"bios-dev/config"
 	"crypto/sha1"
 	"encoding/hex"
 	"encoding/xml"
@@ -16,6 +14,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"wx-aichat/apis/internet"
+	"wx-aichat/config"
 )
 
 func Callback(w http.ResponseWriter, r *http.Request) {

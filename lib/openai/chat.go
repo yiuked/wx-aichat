@@ -1,12 +1,12 @@
 package openai
 
 import (
-	"bios-dev/config"
 	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"wx-aichat/config"
 )
 
 const (
@@ -63,7 +63,7 @@ func Send(msg string) []Result {
 	// 构建 HTTP 请求对象
 	req, _ := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(reqBody))
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", config.AIToken))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", config.OpenAIKey))
 
 	// 发送 HTTP 请求
 	client := &http.Client{}

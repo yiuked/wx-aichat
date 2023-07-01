@@ -1,8 +1,6 @@
 package internet
 
 import (
-	"bios-dev/config"
-	"bios-dev/lib/wx"
 	"context"
 	"fmt"
 	"github.com/russross/blackfriday/v2"
@@ -11,6 +9,8 @@ import (
 	"regexp"
 	"sync"
 	"time"
+	"wx-aichat/config"
+	"wx-aichat/lib/wx"
 )
 
 var addDraftLock sync.Mutex

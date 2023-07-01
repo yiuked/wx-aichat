@@ -1,12 +1,12 @@
 package wx
 
 import (
-	"bios-dev/config"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
+	"wx-aichat/config"
 )
 
 type AccessToken struct {

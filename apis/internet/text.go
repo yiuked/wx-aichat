@@ -1,9 +1,6 @@
 package internet
 
 import (
-	"bios-dev/config"
-	"bios-dev/lib"
-	"bios-dev/lib/openai"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
@@ -11,6 +8,9 @@ import (
 	"log"
 	"strings"
 	"time"
+	"wx-aichat/config"
+	"wx-aichat/lib"
+	"wx-aichat/lib/openai"
 )
 
 var locks map[string]int
@@ -78,8 +78,10 @@ func TextHandel(ctx *MsgContext) {
 		return
 	}
 	// 只有第一次会执行以下代码
+	var requestTimers int
+retry:
 	result := openai.Send(ctx.Msg.Content)
-	log.Println("收到结果")
+	log.Println("收到结果", result)
 	var returnMsg string
 	for _, msg := range result {
 		for _, m := range msg.Choices {
@@ -88,10 +90,16 @@ func TextHandel(ctx *MsgContext) {
 	}
 
 	if len(returnMsg) <= 0 {
-		delete(locks, taskKey)
-		resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">糟糕！GPT连接失败，点我重试一次</a>`, ctx.Msg.Content)
-		ResponseXML(ctx.ResponseWriter, resp)
-		return
+		requestTimers += 1
+		if requestTimers >= 3 {
+			delete(locks, taskKey)
+			resp.Content = fmt.Sprintf(`<a href="weixin://bizmsgmenu?msgmenucontent=%s&msgmenuid=1">糟糕！GPT连接失败，点我重试一次</a>`, ctx.Msg.Content)
+			ResponseXML(ctx.ResponseWriter, resp)
+			return
+		} else {
+			time.Sleep(1 * time.Second)
+			goto retry
+		}
 	}
 
 	faq := Faq{

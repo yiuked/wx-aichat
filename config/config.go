@@ -1,7 +1,6 @@
 package config
 
 import (
-	"bios-dev/lib"
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -10,6 +9,7 @@ import (
 	"log"
 	"os"
 	"time"
+	"wx-aichat/lib"
 )
 
 // 全局配置
@@ -20,7 +20,7 @@ var (
 	WxMediaId  string
 	WXOpenId   string
 	WxAuthor   string
-	AIToken    string
+	OpenAIKey  string
 	HOST       string
 	DataSource string
 	Mgo        *MgoClient
@@ -46,7 +46,7 @@ func init() {
 	WXOpenId = os.Getenv("WX_OPEN_ID")
 	WxAuthor = os.Getenv("WX_AUTHOR")
 	DataSource = os.Getenv("DATA_SOURCE")
-	AIToken = os.Getenv("AI_TOKEN")
+	OpenAIKey = os.Getenv("OPEN_AI_KEY")
 	HOST = os.Getenv("HOST")
 	err := initMongoDB()
 	if err != nil {
